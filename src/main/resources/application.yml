@@ -1,0 +1,15 @@
+micronaut:
+  application:
+    name: objectstorage
+  security:
+    enabled: false
+  object-storage:
+    azure:
+      default:
+        container: tenant1
+        endpoint: https://apptenants.blob.core.windows.net
+
+azure:
+  credential:
+    storage-shared-key:
+      connection-string: <connection-string>

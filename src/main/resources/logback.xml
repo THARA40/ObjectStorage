@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+	<property name="JSON_LOG" value="${JSON_LOG:-false}" />
+	<property name="PRETTY_JSON_LOG" value="${PRETTY_JSON_LOG:-false}" />
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<!-- make sure that all levels are propagated to java.util.logging -->
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{"yyyy-MM-dd HH:mm:ss.SSSX", UTC} %X{trace}|%X{task}|[%thread]|%-5level|%logger{36} %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="infofilelogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoder>
+			<pattern>%d{"yyyy-MM-dd HH:mm:ss.SSSX", UTC} %X{trace}|%X{task}|[%thread]|%-5level|%logger{36} %m%n</pattern>
+		</encoder>
+		<file>./target/logs/application.log</file>
+		<rollingPolicy class="com.byneuron.logging.logback.StartupSizeAndTimeBaseRollingPolicy">
+			<fileNamePattern>./target/logs/application%d{"yyyy-MM-ddX", UTC}_%i.log.gz</fileNamePattern>
+			<maxFileSize>100MB</maxFileSize>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="errorfilelogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<encoder>
+			<pattern>%d{"yyyy-MM-dd HH:mm:ss.SSSX", UTC} %X{trace}|%X{task}|[%thread]|%-5level|%logger{36} %m%n</pattern>
+		</encoder>
+		<file>./target/logs/application-error.log</file>
+		<rollingPolicy class="com.byneuron.logging.logback.StartupSizeAndTimeBaseRollingPolicy">
+
+			<fileNamePattern>./target/logs/application-error_%d{"yyyy-MM-ddX", UTC}_%i.log.gz</fileNamePattern>
+			<maxFileSize>100MB</maxFileSize>
+
+		</rollingPolicy>
+	</appender>
+
+	<!-- <logger name="io.micronaut.http.client" level="TRACE"/>-->
+	<logger name="com.byneuron" level="INFO" />
+
+	<root level="ERROR">
+		<appender-ref ref="infofilelogger" />
+		<appender-ref ref="errorfilelogger" />
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
