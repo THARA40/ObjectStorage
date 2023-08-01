@@ -42,7 +42,6 @@
 		</rollingPolicy>
 	</appender>
 
-	<!-- <logger name="io.micronaut.http.client" level="TRACE"/>-->
 	<logger name="com.byneuron" level="INFO" />
 
 	<root level="ERROR">
@@ -50,4 +49,6 @@
 		<appender-ref ref="errorfilelogger" />
 		<appender-ref ref="STDOUT" />
 	</root>
+	
+	
 </configuration>
